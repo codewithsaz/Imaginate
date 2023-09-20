@@ -1,0 +1,178 @@
+import React, { useEffect } from "react";
+import axios from "axios";
+import {
+  Input,
+  Button,
+  Textarea,
+  Select,
+  Option,
+  Slider,
+} from "@material-tailwind/react";
+
+const AdvancedIMgGenerator = () => {
+  const recentImages = JSON.parse(sessionStorage.getItem("recentImages"));
+  if (recentImages) {
+    const reversedImages = [...recentImages].reverse();
+  }
+  const [prompt, setPrompt] = React.useState("");
+  const [negativePrompt, setnegativePrompt] = React.useState("");
+  const [seed, setSeed] = React.useState("-1");
+  const [data, setData] = React.useState("");
+  const [steps, setSteps] = React.useState(20);
+  const [sampler, setSampler] = React.useState("DPM++ 2M SDE Karras");
+  const [samplersList, setSamplerList] = React.useState([]);
+  const onPromptChange = ({ target }) => setPrompt(target.value);
+  const onSeedChange = ({ target }) => setSeed(target.value);
+  const onNegativePromptChange = ({ target }) =>
+    setnegativePrompt(target.value);
+  function handleSamplerChange(e) {
+    setSampler(e);
+  }
+  function handleStepsChange(e) {
+    setSteps(Number(e));
+  }
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(
+        "http://127.0.0.1:7860/sdapi/v1/samplers",
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      );
+      setSamplerList(response.data);
+    }
+    fetchData();
+  }, []);
+  const handleClick = async (e) => {
+    const response = await axios.post(
+      "http://127.0.0.1:7860/sdapi/v1/txt2img",
+      // '{\n    "prompt": "maltese puppy",\n    "steps": 5\n}',
+      {
+        prompt: prompt,
+        negative_prompt: negativePrompt,
+        seed: seed,
+        sampler_name: sampler,
+        steps: steps,
+        cfg_scale: 7,
+        sampler_index: sampler,
+      },
+      {
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    setData(response.data.images[0]);
+    recentImages.push(response.data.images[0]);
+    sessionStorage.setItem("recentImages", JSON.stringify(recentImages));
+  };
+  return (
+    <div className="w-full h-[calc(100%-5rem)]  flex justify-center p-2">
+      <div className=" lg:w-3/5 h-full  flex flex-col items-center gap-10 p-2 ">
+        <h1 className=" text-3xl lg:text-5xl text-center">
+          Advanced AI Image Generator
+        </h1>
+
+        <div className=" h-full w-full  flex flex-col items-center gap-10 p-5">
+          <div className="w-full h-max max-w-[70rem] flex-col md:flex  gap-5 justify-center items-center p-2 text-white ">
+            <div className="flex w-full h-max max-w-[48rem]  text-white flex-col gap-4 justify-center items-center">
+              <Textarea
+                size="lg"
+                label="Enter your prompt"
+                value={prompt}
+                onChange={onPromptChange}
+                className="  text-white whitespace-normal bg-gray-800 "
+                success
+              />
+
+              <Textarea
+                size="lg"
+                label="Enter your negative prompt"
+                value={negativePrompt}
+                onChange={onNegativePromptChange}
+                className="  text-white whitespace-normal bg-gray-800 "
+                success
+              />
+              <div className=" w-full h-full grid grid-cols-1 md:w-max md:grid-cols-3 justify-center items-center gap-5">
+                <Input
+                  label="Seed"
+                  value={seed}
+                  onChange={onSeedChange}
+                  className="  text-white whitespace-normal "
+                  color="white"
+                />
+                <Select
+                  value={steps.toString()}
+                  className="bg-grey-900 text-white"
+                  label="Steps"
+                  onChange={handleStepsChange}
+                >
+                  <Option value="10">10</Option>
+                  <Option value="20">20</Option>
+                  <Option value="30">30</Option>
+                  <Option value="40">40</Option>
+                </Select>
+                <Select
+                  color="blue"
+                  className="bg-grey-900 text-white"
+                  label="Sampler"
+                  onChange={handleSamplerChange}
+                >
+                  {samplersList.map((samplers, index) => (
+                    <Option key={index} value={samplers.name}>
+                      {samplers.name}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              <Button
+                size="lg"
+                // color={prompt ? "green" : "blue"}
+                disabled={!prompt}
+                className=" rounded cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                onClick={handleClick}
+              >
+                Generate
+              </Button>
+            </div>
+
+            <div className="generated-images">
+              <img
+                className="h-96 w-full rounded-lg object-contain object-center"
+                src={
+                  data
+                    ? `data:image/jpeg;base64,${data}`
+                    : "https://cdn.pixabay.com/photo/2023/04/18/10/19/ai-generated-7934798_960_720.jpg"
+                }
+                alt="nature image"
+              />
+            </div>
+
+            <div className="recent-images mt-5">
+              <h2 className="text-center">Recent Images</h2>
+              <div className="image-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {recentImages ? (
+                  reversedImages.map((imageData, index) => (
+                    <img
+                      className="h-max w-auto  rounded-lg object-contain object-center "
+                      key={index}
+                      src={`data:image/jpeg;base64,${imageData}`}
+                      alt={`Image ${index}`}
+                    />
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdvancedIMgGenerator;
