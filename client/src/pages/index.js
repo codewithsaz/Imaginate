@@ -1,0 +1,9 @@
+export { default as Home } from "./HomePage/HomePage";
+export { default as Login } from "./LoginPage/Login";
+export { default as Signup } from "./SignUpPage/Signup";
+export { default as DocsPage } from "./documentPage/DocsPages";
+export { default as SimpleImgGenPage } from "./SimpleImgGenerator/SimpleImgGenerator";
+export { default as AdvancesImgGenPage } from "./AdvancedIMgGenerator/AdvancedIMgGenerator";
+export { default as ErrorPage } from "./Error/ErrorPage";
+export { default as ApiPage } from "./ApiPage/ApiPage";
+export { default as Landing } from "./Landing/LandingPage";

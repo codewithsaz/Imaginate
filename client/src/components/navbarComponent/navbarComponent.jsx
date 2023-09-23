@@ -43,9 +43,7 @@ export function NavbarComponent() {
         color="white"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
+        <Link to={"/API"}>API</Link>
       </Typography>
       <Typography
         as="li"
@@ -53,9 +51,7 @@ export function NavbarComponent() {
         color="white"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
+        <Link to={"/docs"}>Docs</Link>
       </Typography>
     </ul>
   );

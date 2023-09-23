@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <div className=" w-full h-full">
+      <div className=" w-full h-screen flex flex-col">
         <NavbarComponent></NavbarComponent>
         <Layout />
       </div>

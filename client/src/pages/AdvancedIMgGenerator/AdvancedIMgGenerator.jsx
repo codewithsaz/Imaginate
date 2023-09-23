@@ -6,14 +6,13 @@ import {
   Textarea,
   Select,
   Option,
-  Slider,
+  Spinner,
 } from "@material-tailwind/react";
 
 const AdvancedIMgGenerator = () => {
   const recentImages = JSON.parse(sessionStorage.getItem("recentImages"));
-  if (recentImages) {
-    const reversedImages = [...recentImages].reverse();
-  }
+  const reversedImages = [...recentImages].reverse();
+  const [loading, setLoading] = React.useState(false);
   const [prompt, setPrompt] = React.useState("");
   const [negativePrompt, setnegativePrompt] = React.useState("");
   const [seed, setSeed] = React.useState("-1");
@@ -46,6 +45,7 @@ const AdvancedIMgGenerator = () => {
     fetchData();
   }, []);
   const handleClick = async (e) => {
+    setLoading(true);
     const response = await axios.post(
       "http://127.0.0.1:7860/sdapi/v1/txt2img",
       // '{\n    "prompt": "maltese puppy",\n    "steps": 5\n}',
@@ -66,6 +66,7 @@ const AdvancedIMgGenerator = () => {
       }
     );
     setData(response.data.images[0]);
+    setLoading(false);
     recentImages.push(response.data.images[0]);
     sessionStorage.setItem("recentImages", JSON.stringify(recentImages));
   };
@@ -140,15 +141,21 @@ const AdvancedIMgGenerator = () => {
             </div>
 
             <div className="generated-images">
-              <img
-                className="h-96 w-full rounded-lg object-contain object-center"
-                src={
-                  data
-                    ? `data:image/jpeg;base64,${data}`
-                    : "https://cdn.pixabay.com/photo/2023/04/18/10/19/ai-generated-7934798_960_720.jpg"
-                }
-                alt="nature image"
-              />
+              {loading ? (
+                <div className="h-96 w-full rounded-lg  flex justify-center items-center bg-gray-800 shadow-inner">
+                  <Spinner color="pink" className="h-12 w-96" />
+                </div>
+              ) : (
+                <img
+                  className="h-96 w-full rounded-lg object-contain object-center"
+                  src={
+                    data
+                      ? `data:image/jpeg;base64,${data}`
+                      : "https://cdn.pixabay.com/photo/2023/04/18/10/19/ai-generated-7934798_960_720.jpg"
+                  }
+                  alt="nature image"
+                />
+              )}
             </div>
 
             <div className="recent-images mt-5">
