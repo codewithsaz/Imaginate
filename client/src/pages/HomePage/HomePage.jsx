@@ -11,7 +11,12 @@ const HomePage = ({ user }) => {
       className="flex flex-col justify-center items-center"
     >
       <h1>Dear {user?.email}</h1>
-      <img style={{ borderRadius: "50px" }} src={user?.picture} alt="" />
+      <img
+        className=" w-16"
+        style={{ borderRadius: "50px" }}
+        src={user?.picture}
+        alt=""
+      />
 
       <p>
         You are viewing this page because you are logged in or you just signed

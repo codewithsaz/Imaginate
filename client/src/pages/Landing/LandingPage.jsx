@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
-    <>
+    <div className="w-full h-full flex flex-col justify-center items-center">
       <header style={{ textAlign: "center" }}>
         <h1>Welcome to my world</h1>
       </header>
@@ -33,7 +33,7 @@ const LandingPage = () => {
           Login
         </Link>
       </main>
-    </>
+    </div>
   );
 };
 

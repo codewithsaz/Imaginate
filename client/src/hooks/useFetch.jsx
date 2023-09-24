@@ -29,9 +29,15 @@ const useFetch = (url) => {
       }
     } catch (error) {
       console.log(error);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+
+      setError(error.response.data.message);
     }
   };
-  return { loading, error, handleGoogle };
+
+  return { loading, error, handleGoogle, setError };
 };
 
 export default useFetch;

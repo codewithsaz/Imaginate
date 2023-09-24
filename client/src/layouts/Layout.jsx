@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { Routes, Route, Navigate } from "react-router-dom";
-// import MainContent from "../components/mainContent/mainContent";
-// import ErrorPage from "../pages/Error/ErrorPage";
-// import SimpleImgGenerator from "../pages/SimpleImgGenerator/SimpleImgGenerator";
-// import AdvancedIMgGenerator from "../pages/AdvancedIMgGenerator/AdvancedIMgGenerator";
-// import HomePage from "../pages/HomePage/HomePage";
-// import DocsPages from "../pages/documentPage/DocsPages";
-// import ApiPage from "../pages/ApiPage/ApiPage";
 import {
   Home,
   Signup,
@@ -19,49 +11,77 @@ import {
   ApiPage,
   Landing,
 } from "../pages";
+import LoadingPage from "../pages/Loading/LoadingPage";
+import axios from "axios";
 
 const Layout = () => {
   const initialImageArray = [];
   sessionStorage.setItem("recentImages", JSON.stringify(initialImageArray));
   const [user, setUser] = useState({});
+  const [loading, setloading] = useState(true);
   useEffect(() => {
     const theUser = localStorage.getItem("user");
 
     if (theUser && !theUser.includes("undefined")) {
-      setUser(JSON.parse(theUser));
+      let theUserObj = JSON.parse(theUser);
+      async function fetchData() {
+        const res = await axios.get("http://localhost:8080/user/verify", {
+          headers: {
+            Authorization: theUserObj.token,
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(res.data);
+        if (res.data.success) setUser(JSON.parse(theUser));
+        else {
+          localStorage.removeItem("user");
+        }
+      }
+      fetchData();
     }
+    setTimeout(() => {
+      setloading(false);
+    }, 500);
   }, []);
   return (
     <>
-      <Routes>
-        <Route path="/simple" element={<SimpleImgGenPage />} />
-        <Route path="/" element={<Landing />} />
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <Routes>
+          <Route path="/simple" element={<SimpleImgGenPage />} />
+          <Route path="/" element={<Landing />} />
 
-        <Route
-          path="/advanced"
-          element={
-            user?.email ? <AdvancesImgGenPage /> : <Navigate to="/simple" />
-          }
-        />
-        <Route
-          path="/docs"
-          element={user?.email ? <Navigate to="/" /> : <DocsPage />}
-        />
-        <Route path="/API" element={<ApiPage />} />
-        <Route
-          path="/home"
-          element={user?.email ? <Home user={user} /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/signup"
-          element={user?.email ? <Navigate to="/home" /> : <Signup />}
-        />
-        <Route
-          path="/login"
-          element={user?.email ? <Navigate to="/home" /> : <Login />}
-        />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
+          <Route
+            path="/advanced"
+            element={
+              user?.email ? <AdvancesImgGenPage /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/docs"
+            element={user?.email ? <DocsPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/API"
+            element={user?.email ? <ApiPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/home"
+            element={user?.email ? <Home user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/signup"
+            element={user?.email ? <Navigate to="/home" /> : <Signup />}
+          />
+          <Route
+            path="/login"
+            element={user?.email ? <Navigate to="/home" /> : <Login />}
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      )}
     </>
   );
 };

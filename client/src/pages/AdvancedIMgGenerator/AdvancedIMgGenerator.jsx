@@ -33,21 +33,23 @@ const AdvancedIMgGenerator = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(
-        "http://127.0.0.1:7860/sdapi/v1/samplers",
+        "http://localhost:8080/imggen/samplers",
         {
           headers: {
             accept: "application/json",
           },
         }
       );
-      setSamplerList(response.data);
+      setSamplerList(response.data.samplers);
     }
     fetchData();
   }, []);
   const handleClick = async (e) => {
     setLoading(true);
+    const theUser = localStorage.getItem("user");
+    let theUserObj = JSON.parse(theUser);
     const response = await axios.post(
-      "http://127.0.0.1:7860/sdapi/v1/txt2img",
+      "http://localhost:8080/imggen/advanced",
       // '{\n    "prompt": "maltese puppy",\n    "steps": 5\n}',
       {
         prompt: prompt,
@@ -55,11 +57,10 @@ const AdvancedIMgGenerator = () => {
         seed: seed,
         sampler_name: sampler,
         steps: steps,
-        cfg_scale: 7,
-        sampler_index: sampler,
       },
       {
         headers: {
+          Authorization: theUserObj.token,
           accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -78,7 +79,7 @@ const AdvancedIMgGenerator = () => {
         </h1>
 
         <div className=" h-full w-full  flex flex-col items-center gap-10 p-5">
-          <div className="w-full h-max max-w-[70rem] flex-col md:flex  gap-5 justify-center items-center p-2 text-white ">
+          <div className="w-full h-max max-w-[70rem] flex-col flex gap-5 justify-center items-center p-2 text-white ">
             <div className="flex w-full h-max max-w-[48rem]  text-white flex-col gap-4 justify-center items-center">
               <Textarea
                 size="lg"
@@ -97,7 +98,7 @@ const AdvancedIMgGenerator = () => {
                 className="  text-white whitespace-normal bg-gray-800 "
                 success
               />
-              <div className=" w-full h-full grid grid-cols-1 md:w-max md:grid-cols-3 justify-center items-center gap-5">
+              <div className=" w-full h-max grid grid-cols-1 md:w-max md:grid-cols-3 gap-5">
                 <Input
                   label="Seed"
                   value={seed}
@@ -112,14 +113,17 @@ const AdvancedIMgGenerator = () => {
                   onChange={handleStepsChange}
                 >
                   <Option value="10">10</Option>
+                  <Option value="15">15</Option>
                   <Option value="20">20</Option>
+                  <Option value="25">25</Option>
                   <Option value="30">30</Option>
+                  <Option value="35">35</Option>
                   <Option value="40">40</Option>
                 </Select>
                 <Select
                   color="blue"
                   className="bg-grey-900 text-white"
-                  label="Sampler"
+                  label="Select Sampler"
                   onChange={handleSamplerChange}
                 >
                   {samplersList.map((samplers, index) => (
@@ -142,29 +146,33 @@ const AdvancedIMgGenerator = () => {
 
             <div className="generated-images">
               {loading ? (
-                <div className="h-96 w-full rounded-lg  flex justify-center items-center bg-gray-800 shadow-inner">
+                <div className="h-96 md:w-[32rem] md:h-[32rem] max-w-lg rounded-lg  flex justify-center items-center bg-gray-800 shadow-inner">
                   <Spinner color="pink" className="h-12 w-96" />
                 </div>
               ) : (
-                <img
-                  className="h-96 w-full rounded-lg object-contain object-center"
-                  src={
-                    data
-                      ? `data:image/jpeg;base64,${data}`
-                      : "https://cdn.pixabay.com/photo/2023/04/18/10/19/ai-generated-7934798_960_720.jpg"
-                  }
-                  alt="nature image"
-                />
+                <div className="h-auto w-full max-w-lg rounded-lg  flex justify-center items-center bg-gray-800 shadow-inner">
+                  <img
+                    className="h-auto w-full rounded-lg object-contain object-center"
+                    src={
+                      data
+                        ? `data:image/jpeg;base64,${data}`
+                        : "https://cdn.pixabay.com/photo/2023/04/18/10/19/ai-generated-7934798_960_720.jpg"
+                    }
+                    alt="nature image"
+                  />
+                </div>
               )}
             </div>
 
             <div className="recent-images mt-5">
-              <h2 className="text-center">Recent Images</h2>
+              {recentImages.length > 0 && (
+                <h2 className="text-center">Recent Images</h2>
+              )}
               <div className="image-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {recentImages ? (
                   reversedImages.map((imageData, index) => (
                     <img
-                      className="h-max w-auto  rounded-lg object-contain object-center "
+                      className="h-max w-96   rounded-lg object-contain object-center "
                       key={index}
                       src={`data:image/jpeg;base64,${imageData}`}
                       alt={`Image ${index}`}
