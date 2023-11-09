@@ -53,25 +53,30 @@ export function NavbarComponent() {
       >
         <Link to={"/docs"}>Docs</Link>
       </Typography>
+      <Link
+        to="/login"
+        className=" lg:hidden w-max rounded-lg bg-pink-700 px-4 py-2 hover:bg-pink-900"
+      >
+        Login
+      </Link>
     </ul>
   );
 
   return (
     // <div className="-m-6 max-h-[768px] w-full overflow-scroll">
-    <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4 bg-gray-900 border-0 shadow-2xl">
+    <Navbar className="sticky top-0 z-30 h-max max-w-full rounded-none py-4 px-2 lg:px-4 lg:py-4 bg-gray-900 backdrop-blur-sm border-0 shadow-2xl">
       <div className="flex items-center justify-between  text-white">
         <Typography className="mr-4 cursor-pointer  font-extrabold text-3xl font-sans">
           <Link to={"/"}>Imaginate</Link>
         </Typography>
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
-          <Button
-            variant="gradient"
-            size="sm"
-            className="hidden lg:inline-block"
+          <Link
+            to="/login"
+            className=" hidden lg:inline-block rounded-lg bg-pink-700 px-4 py-1 hover:bg-pink-900"
           >
-            <span>Join</span>
-          </Button>
+            Login
+          </Link>
           <IconButton
             variant="text"
             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -111,12 +116,7 @@ export function NavbarComponent() {
           </IconButton>
         </div>
       </div>
-      <Collapse open={openNav}>
-        {navList}
-        <Button variant="gradient" size="lg" fullWidth className="mb-2">
-          <span>Join</span>
-        </Button>
-      </Collapse>
+      <Collapse open={openNav}>{navList}</Collapse>
     </Navbar>
   );
 }

@@ -11,8 +11,8 @@ function App() {
 
   return (
     <>
-      <div className=" w-full h-screen flex flex-col">
-        <NavbarComponent></NavbarComponent>
+      <div className=" w-full min-h-screen scroll-smooth">
+        <NavbarComponent />
         <Layout />
       </div>
     </>

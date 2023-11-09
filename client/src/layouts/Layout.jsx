@@ -32,7 +32,6 @@ const Layout = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log(res.data);
         if (res.data.success) setUser(JSON.parse(theUser));
         else {
           localStorage.removeItem("user");

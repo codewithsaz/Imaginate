@@ -2,7 +2,7 @@ import React from "react";
 
 const LoadingPage = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-[90vh] flex flex-col justify-center items-center">
       <div className=" h-20 w-20">
         <svg
           version="1.1"
