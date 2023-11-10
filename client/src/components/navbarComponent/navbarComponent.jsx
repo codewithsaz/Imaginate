@@ -37,6 +37,7 @@ export function NavbarComponent() {
       >
         <Link to={"/advanced"}>Advanced</Link>
       </Typography>
+
       <Typography
         as="li"
         variant="small"

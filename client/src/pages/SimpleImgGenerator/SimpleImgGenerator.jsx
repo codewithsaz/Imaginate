@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 import { Input, Button, Textarea, Spinner } from "@material-tailwind/react";
 
 const SimpleImgGenerator = () => {
@@ -7,7 +8,7 @@ const SimpleImgGenerator = () => {
   const reversedImages = [...recentImages].reverse();
   const [loading, setLoading] = React.useState(false);
 
-  const [prompt, setPrompt] = React.useState("cute baby portrait");
+  const [prompt, setPrompt] = React.useState("");
   const [negativePrompt, setnegativePrompt] = React.useState("");
   const [seed, setSeed] = React.useState("-1");
   const [data, setData] = React.useState("");
@@ -37,32 +38,34 @@ const SimpleImgGenerator = () => {
     sessionStorage.setItem("recentImages", JSON.stringify(recentImages));
   };
   return (
-    <div className="w-full h-[calc(100%-5rem)]  flex justify-center p-2">
-      <div className=" lg:w-3/5 h-full flex flex-col items-center gap-10 p-2 ">
-        <h1 className=" text-3xl lg:text-5xl ">Free AI Image Generator</h1>
+    <div className="w-full h-[calc(100%-5rem)]  flex flex-col items-center justify-center p-2">
+      <div className=" lg:w-3/5 h-full flex flex-col items-center gap-10">
+        <h1 className=" text-3xl lg:text-5xl text-center ">
+          AI Image Generator
+        </h1>
         <p className="w-3/4 h-full text-center">
-          Convert words to images with Fotor's free AI image generator. Watch
-          your imagination transform into AI-generated images online. Free text
-          to image AI generator, save time on creating or searching for the
+          Convert words to images with Imaginates's free AI image generator.
+          Watch your imagination transform into AI-generated images online. Free
+          text to image AI generator, save time on creating or searching for the
           perfect image.
         </p>
 
         <div className=" h-full w-full  flex flex-col items-center gap-10 p-5">
           <div className="w-full h-max max-w-[70rem] flex-col flex  gap-5 justify-center items-center p-2 text-white ">
-            <div className="flex w-full h-max max-w-[48rem]  text-white flex-col gap-4 justify-center items-center">
-              <Textarea
-                size="lg"
-                label="Enter your prompt"
+            <div className="flex w-full h-max max-w-[48rem]  text-white flex-col md:flex-row gap-4 bg-black/60 backdrop-blur-lg justify-center items-center p-2 rounded-lg ">
+              <input
+                name=""
+                id=""
                 value={prompt}
                 onChange={onPromptChange}
-                className="  text-white whitespace-normal "
-                success
-              />
+                className="pl-2 w-full h-10 text-white whitespace-normal bg-transparent outline-none "
+                placeholder="Enter your prompt here"
+              ></input>
               <Button
                 size="lg"
                 // color={prompt ? "green" : "blue"}
                 disabled={!prompt}
-                className=" rounded cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                className=" w-full md:w-max rounded-lg cursor-pointer bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
                 onClick={handleClick}
               >
                 Generate
@@ -88,29 +91,29 @@ const SimpleImgGenerator = () => {
                 </div>
               )}
             </div>
-
-            <div className="recent-images mt-5">
-              {recentImages.length > 0 && (
-                <h2 className="text-center">Recent Images</h2>
-              )}
-              <div className="image-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {recentImages ? (
-                  reversedImages.map((imageData, index) => (
-                    <img
-                      className="h-max w-96   rounded-lg object-contain object-center "
-                      key={index}
-                      src={`data:image/jpeg;base64,${imageData}`}
-                      alt={`Image ${index}`}
-                    />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>
+      {recentImages.length > 0 && (
+        <section className=" bg-gray-900 rounded-lg p-2 flex flex-col gap-2">
+          <h2 className="text-xl">Recent Images</h2>
+
+          <div className="image-container columns-2 md:columns-4 lg:columns-5 mx-auto space-y-4">
+            {recentImages ? (
+              reversedImages.map((imageData, index) => (
+                <img
+                  className="h-auto w-96  rounded-lg object-contain object-center "
+                  key={index}
+                  src={`data:image/jpeg;base64,${imageData}`}
+                  alt={`Image ${index}`}
+                />
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

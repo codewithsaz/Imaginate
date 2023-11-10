@@ -5,11 +5,11 @@ import {
   Signup,
   DocsPage,
   SimpleImgGenPage,
-  AdvancesImgGenPage,
   ErrorPage,
   Login,
   ApiPage,
   Landing,
+  NewAdvancesImgGenPage,
 } from "../pages";
 import LoadingPage from "../pages/Loading/LoadingPage";
 import axios from "axios";
@@ -55,7 +55,7 @@ const Layout = () => {
           <Route
             path="/advanced"
             element={
-              user?.email ? <AdvancesImgGenPage /> : <Navigate to="/login" />
+              user?.email ? <NewAdvancesImgGenPage /> : <Navigate to="/login" />
             }
           />
           <Route

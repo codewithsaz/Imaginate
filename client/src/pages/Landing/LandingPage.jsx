@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import LoadingPage from "../Loading/LoadingPage";
-
+import {
+  ReactCompareSlider,
+  ReactCompareSliderImage,
+} from "react-compare-slider";
 const images = [
   "https://i.ibb.co/ngdJcNM/download-1.png",
   "https://i.ibb.co/dG4r2PV/03910-1821852725.jpg",
@@ -45,9 +48,20 @@ const images2 = [
 
 const LandingPage = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-center  items-center gap-4 ">
-      <header className=" w-full h-full bg-[url('https://i.ibb.co/C09thv9/use-midjourney-ai-to-create-stunning-ai-artwork-based-on-your-desired-words.jpg')]  overflow-hidden">
-        <section className="flex flex-col justify-center items-center gap-2 pt-10 h-full w-full bg-gradient-to-b from-black/60  to-gray-900  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80">
+    <div className="w-full h-full flex flex-col justify-center  items-center gap-4 pb-10 ">
+      <header className=" w-full h-full bg-[url('https://i.ibb.co/C09thv9/use-midjourney-ai-to-create-stunning-ai-artwork-based-on-your-desired-words.jpg')] overflow-hidden">
+        <section className="flex flex-col justify-center items-center gap-2 pt-2 h-full w-full bg-gradient-to-b from-black/60  to-gray-900 backdrop-filter backdrop-blur-sm bg-opacity-80">
+          <nav className="w-full flex justify-between items-center px-4 py-2 pb-10">
+            <h1 className="mr-4 cursor-pointer  font-extrabold text-3xl font-sans">
+              <Link to={"/"}>Imaginate</Link>
+            </h1>
+            <Link
+              to="/login"
+              className=" hidden lg:inline-block rounded-lg bg-pink-700 px-4 py-1 hover:bg-pink-900"
+            >
+              Login
+            </Link>
+          </nav>
           <h1 className="text-3xl md:text-5xl lg:text-6xl">
             Unleash your{" "}
             <span
@@ -68,8 +82,8 @@ const LandingPage = () => {
           </h1>
           <div className="w-full h-max flex flex-col justify-center items-center pt-10 ">
             <div
-              className=" w-max  h-max  flex flex-col md:flex-row  justify-center items-center gap-4  backdrop-blur-md rounded-lg p-2 hover:scale-105 transition duration-300 ease-in-out "
-              style={{ boxShadow: "0px 0px 30px #f209ac" }}
+              className=" w-max  h-max  flex flex-col md:flex-row text-pink-500 font-semibold  justify-center items-center gap-4 bg-black/50 backdrop-blur-md rounded-lg p-2 hover:scale-105 transition duration-300 ease-in-out "
+              // style={{ boxShadow: "0px 0px 30px #f209ac" }}
             >
               <h1 className="text-xl md:text-2xl lg:text-3xl px-5 py-1 ">
                 <Link to="/simple">Start generating images</Link>
@@ -118,11 +132,11 @@ const LandingPage = () => {
       </header>
       <main className="w-full h-full flex flex-col  items-center  gap-4 p-4 ">
         <section className="w-full  flex flex-col lg:flex-row  justify-center items-center gap-4   px-4 py-10 ">
-          <div className="w-auto max-w-lg space-y-4 text-center lg:text-start">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl">
+          <div className="w-auto max-w-xl space-y-4 text-center lg:text-start">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl">
               Advance Image Generator
             </h1>
-            <p className="text-sm md:text-md lg:text-lg">
+            <p className="text-sm md:text-md lg:text-lg text-justify">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae,
               dolores corporis eligendi omnis nesciunt, nobis consectetur
               similique, vero necessitatibus reprehenderit minus repellendus aut
@@ -135,7 +149,7 @@ const LandingPage = () => {
           </div>
           <div className="w-max z-0 ">
             <img
-              className=" max-w-xs md:max-w-md  rounded-lg p-2"
+              className=" max-w-xs md:max-w-md  p-2"
               src="https://i.ibb.co/j6hrqfL/ai-img-clg.webp"
               alt="Image 1"
               loading="lazy"
@@ -146,18 +160,18 @@ const LandingPage = () => {
         <section className="w-full  flex flex-col-reverse lg:flex-row  justify-center items-center gap-4   px-4 py-10  ">
           <div className="w-max ">
             <img
-              className=" max-w-xs md:max-w-md  rounded-lg p-2"
+              className=" max-w-xs md:max-w-md   p-2"
               src="https://i.ibb.co/rQYsyYL/file.jpg"
               alt="Image 1"
               loading="lazy"
               style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
             />
           </div>
-          <div className="w-auto max-w-lg space-y-4  text-center lg:text-start ">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl">
+          <div className="w-auto max-w-xl space-y-4  text-center lg:text-start ">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl">
               Save your Creation
             </h1>
-            <p className="text-sm md:text-md lg:text-lg">
+            <p className="text-sm md:text-md lg:text-lg text-justify">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro
               voluptates unde aspernatur amet voluptatum possimus atque magni
               optio fugiat. Explicabo hic dolore, id, doloremque laudantium sunt
@@ -170,10 +184,10 @@ const LandingPage = () => {
         </section>
         <section className="w-full  flex flex-col lg:flex-row  justify-center items-center gap-4   px-4 py-10 ">
           <div className="w-auto max-w-lg space-y-4 text-center lg:text-start">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl">
-              Use our API's to generate images for your platform
+            <h1 className="text-3xl md:text-4xl lg:text-5xl">
+              Use our AI image API in your platform
             </h1>
-            <p className="text-sm md:text-md lg:text-lg">
+            <p className="text-sm md:text-md lg:text-lg text-justify">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. In
               eligendi iusto molestiae! Alias explicabo in illo aliquam
               doloribus, eum optio, totam quia fugit qui blanditiis odio. Eos
@@ -184,12 +198,38 @@ const LandingPage = () => {
           </div>
           <div className="w-max z-0 ">
             <img
-              className=" max-w-xs md:max-w-md  rounded-lg p-2"
+              className=" max-w-xs md:max-w-md   p-2"
               src="https://i.ibb.co/PznMNXH/Developer-activity-amico.png"
               alt="Image 1"
               loading="lazy"
-              style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
+              // style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
             />
+          </div>
+        </section>
+        <section className="w-full  flex flex-col-reverse lg:flex-row  justify-center items-center gap-4   px-4 py-10  ">
+          <div className=" w-full max-w-xs md:max-w-md  p-2 ">
+            <ReactCompareSlider
+              itemOne={
+                <ReactCompareSliderImage src="https://i.ibb.co/WzzK7XB/potrait-normal.png" />
+              }
+              itemTwo={
+                <ReactCompareSliderImage src="https://i.ibb.co/hFtZfBw/potrait-upscaled.png" />
+              }
+            />
+          </div>
+          <div className="w-auto max-w-xl space-y-4  text-center lg:text-start ">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl">
+              Upscale Generated Images
+            </h1>
+            <p className="text-sm md:text-md lg:text-lg text-justify">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro
+              voluptates unde aspernatur amet voluptatum possimus atque magni
+              optio fugiat. Explicabo hic dolore, id, doloremque laudantium sunt
+              assumenda deserunt tempore placeat error illum dolorum delectus
+              magni. Sequi dolor asperiores a quibusdam accusantium! Quod fugiat
+              itaque sit natus eum unde explicabo corrupti distinctio,
+              dignissimos ullam cum rerum eius. Sequi ipsa aliquam porro!
+            </p>
           </div>
         </section>
       </main>

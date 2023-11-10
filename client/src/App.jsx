@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <div className=" w-full min-h-screen scroll-smooth">
-        <NavbarComponent />
+        {/* <NavbarComponent /> */}
         <Layout />
       </div>
     </>

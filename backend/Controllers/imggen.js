@@ -214,7 +214,40 @@ exports.simpleImgGenerator = async (req, res) => {
 };
 
 exports.advanceImgGenerator = async (req, res) => {
-  const { prompt, negative_prompt, seed, sampler_name, steps } = req.body;
+  const { prompt, negative_prompt, seed, sampler_name, steps, aspectRatio } =
+    req.body;
+  let width,
+    height = 0;
+  switch (aspectRatio) {
+    case 1:
+      {
+        (width = 640), (height = 360);
+      }
+      break;
+    case 2:
+      {
+        (width = 640), (height = 480);
+      }
+      break;
+    case 3:
+      {
+        (width = 512), (height = 512);
+      }
+      break;
+    case 4:
+      {
+        (width = 480), (height = 640);
+      }
+      break;
+    case 5:
+      {
+        (width = 360), (height = 640);
+      }
+      break;
+    default: {
+      (width = 512), (height = 512);
+    }
+  }
   try {
     const response = await axios.post(
       "http://127.0.0.1:7860/sdapi/v1/txt2img",
@@ -227,6 +260,8 @@ exports.advanceImgGenerator = async (req, res) => {
         steps: steps,
         cfg_scale: 7,
         sampler_index: sampler_name,
+        width: width,
+        height: height,
       },
       {
         headers: {

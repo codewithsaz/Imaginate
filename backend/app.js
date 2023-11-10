@@ -15,8 +15,10 @@ const User = require("./Models/Users");
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: "http://localhost:5173",
     methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeader: true,
+    credentials: true,
   })
 );
 app.use(express.json());
