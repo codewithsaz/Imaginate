@@ -152,7 +152,6 @@ const LandingPage = () => {
               className=" max-w-xs md:max-w-md  p-2"
               src="https://i.ibb.co/j6hrqfL/ai-img-clg.webp"
               alt="Image 1"
-              loading="lazy"
               style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
             />
           </div>
@@ -163,7 +162,6 @@ const LandingPage = () => {
               className=" max-w-xs md:max-w-md   p-2"
               src="https://i.ibb.co/rQYsyYL/file.jpg"
               alt="Image 1"
-              loading="lazy"
               style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
             />
           </div>
@@ -199,9 +197,8 @@ const LandingPage = () => {
           <div className="w-max z-0 ">
             <img
               className=" max-w-xs md:max-w-md   p-2"
-              src="https://i.ibb.co/PznMNXH/Developer-activity-amico.png"
+              src="https://cloud.appwrite.io/v1/storage/buckets/64ccecbabb7678214bc1/files/654dc7be175035121522/view?project=64c1ebd5af24b09244a9"
               alt="Image 1"
-              loading="lazy"
               // style={{ filter: "drop-shadow(0px 0px 10px #f209ac)" }}
             />
           </div>
